@@ -217,6 +217,41 @@ time="2022-11-14T12:24:19Z" level=info msg="All records are already up to date"
 
 ![wordpress install](img/install.png)
 
+## removemos los recursos
+
+### Removemos los recursos en Kubernetes
+Es importante no saltearse este paso ya que algunos recursos en kubernetes generan recursos en AWS, si se saltean este paso pueden correr el riezgo de dejar algun recurso de AWS en el camino que les pueda genera costos a futuro.
+
+```shell
+kubectl delete -f manifests
+```
+
+```shell
+persistentvolumeclaim "mariadb-data-disk" deleted
+persistentvolumeclaim "wp-pv-claim" deleted
+secret "mariadb-secrets" deleted
+deployment.apps "mariadb" deleted
+service "mariadb" deleted
+deployment.apps "wordpress" deleted
+service "wordpress" deleted
+ingress.networking.k8s.io "wp" deleted
+serviceaccount "external-dns" deleted
+clusterrole.rbac.authorization.k8s.io "external-dns" deleted
+clusterrolebinding.rbac.authorization.k8s.io "external-dns" deleted
+deployment.apps "external-dns" deleted
+```
+
+### removemos el cluster
+
+```shell
+  eksctl delete cluster -f awsug-containers-day-2022.yaml
+```
+
+### removemos la policy generada
+
+```shell
+aws iam delete-policy --policy-arn arn:aws:iam::695454143523:policy/aws101_externaldns_permissions
+```
 
 ## Disclaimer
 
@@ -232,17 +267,3 @@ Damian A. Gitto Olguin
 
 [@enlink](https://twitter.com/enlink)] / [@teracloudio](https://twitter.com/teracloudio)
 <https://teracloud.io>
-
-## removemos los recursos
-
-### removemos el cluster
-
-```shell
-  eksctl delete cluster -f aws101-cluster.yaml
-```
-
-### removemos la policy generada
-
-```shell
-aws iam delete-policy --policy-arn arn:aws:iam::695454143523:policy/aws101_externaldns_permissions
-```
