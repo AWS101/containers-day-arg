@@ -33,26 +33,26 @@
 
 - Verificamos cluster
 
-Verificamos que el cluster se encuentre arriba y que sus nodos esten ready
+    Verificamos que el cluster se encuentre arriba y que sus nodos esten ready
 
-```shell
-kubectl cluster-info
-`
+    ```shell
+    kubectl cluster-info
+    ```
 
-```shell
-Kubernetes control plane is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com
-CoreDNS is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-```
+    ```shell
+    Kubernetes control plane is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com
+    CoreDNS is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+    ```
 
-```shell
-kubectl get nodes
-```
+    ```shell
+    kubectl get nodes
+    ```
 
-```shell
-NAME                             STATUS   ROLES    AGE   VERSION
-ip-192-168-20-168.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
-ip-192-168-36-113.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
-```
+    ```shell
+    NAME                             STATUS   ROLES    AGE   VERSION
+    ip-192-168-20-168.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
+    ip-192-168-36-113.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
+    ```
 
 - Crearemos una IAM Policy y un Role para permitirle a External-DNS interactuar con la api de AWS.
     **Actualizar la zona DNS**
