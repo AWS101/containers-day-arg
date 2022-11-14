@@ -1,0 +1,74 @@
+apiVersion: eksctl.io/v1alpha5
+availabilityZones:
+- us-east-1c
+- us-east-1d
+cloudWatch:
+  clusterLogging: {}
+iam:
+  vpcResourceControllerPolicy: true
+  withOIDC: true
+kind: ClusterConfig
+kubernetesNetworkConfig:
+  ipFamily: IPv4
+managedNodeGroups:
+- amiFamily: AmazonLinux2
+  desiredCapacity: 2
+  disableIMDSv1: false
+  disablePodIMDS: false
+  iam:
+    withAddonPolicies:
+      albIngress: true
+      appMesh: false
+      appMeshPreview: false
+      autoScaler: true
+      awsLoadBalancerController: true
+      certManager: true
+      cloudWatch: true
+      ebs: true
+      efs: true
+      externalDNS: true
+      fsx: false
+      imageBuilder: true
+      xRay: false
+  instanceSelector: {}
+  instanceTypes:
+  - t3.small
+  - t2.small
+  labels:
+    alpha.eksctl.io/cluster-name: aws101
+    alpha.eksctl.io/nodegroup-name: ng-219df3a7
+  maxSize: 2
+  minSize: 2
+  name: ng-219df3a7
+  privateNetworking: false
+  releaseVersion: ""
+  securityGroups:
+    withLocal: null
+    withShared: null
+  spot: true
+  ssh:
+    allow: false
+    publicKeyPath: ""
+  tags:
+    alpha.eksctl.io/nodegroup-name: ng-219df3a7
+    alpha.eksctl.io/nodegroup-type: managed
+  volumeIOPS: 3000
+  volumeSize: 80
+  volumeThroughput: 125
+  volumeType: gp3
+metadata:
+  name: aws101
+  region: us-east-1
+  version: "1.23"
+privateCluster:
+  enabled: false
+  skipEndpointCreation: false
+vpc:
+  autoAllocateIPv6: false
+  cidr: 192.168.0.0/16
+  clusterEndpoints:
+    privateAccess: false
+    publicAccess: true
+  manageSharedNodeSecurityGroupRules: true
+  nat:
+    gateway: Single
