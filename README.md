@@ -144,7 +144,78 @@
     ```
 
 
-### Desplegamos nuestra aplicacion
+## Desplegamos nuestra aplicacion
+
+El en este workshop vamos a utilizar como ejemplo una aplicacion statefull compuesta por un servicio de bases de datos basado en MariaDB, un servicio web basado en Apache corriendo un Wordpress y External DNS para la gestion automaticamente los registros DNS.
+El objetivo es meramente educativo y pretende demostrar como desplegar containers statefull con almacenamiento basado en EBS.
+
+1. deplegamos los manifiestos de Kubernetes utilizando Kubectl
+
+```shell
+kubectl apply -f manifests
+```
+
+```shell
+persistentvolumeclaim/mariadb-data-disk created
+persistentvolumeclaim/wp-pv-claim created
+secret/mariadb-secrets created
+deployment.apps/mariadb created
+service/mariadb created
+deployment.apps/wordpress created
+service/wordpress created
+ingress.networking.k8s.io/wp created
+serviceaccount/external-dns created
+clusterrole.rbac.authorization.k8s.io/external-dns created
+clusterrolebinding.rbac.authorization.k8s.io/external-dns created
+deployment.apps/external-dns created
+```
+
+2. Verificamos que los deployments se encuentren available
+
+```shell
+kubectl get deployments
+```
+
+```shell
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+external-dns   1/1     1            1           70s
+mariadb        1/1     1            1           73s
+wordpress      1/1     1            1           73s
+```
+
+3. Verificamos que los pods se encuentren corriendo
+
+```shell
+kubectl get pods
+```
+
+```shell
+NAME                            READY   STATUS    RESTARTS   AGE
+external-dns-65f6b4cc8b-6p846   1/1     Running   0          2m48s
+mariadb-d66f64f79-lkmqz         1/1     Running   0          2m51s
+wordpress-76b458d445-7lk27      1/1     Running   0          2m51s
+```
+
+4. Verificamos que External-DNS haya creado los registros DNS para nuestra aplicacion
+
+```shell
+kubectl logs external-dns-65f6b4cc8b-6p846
+```
+
+```shell
+time="2022-11-14T12:22:18Z" level=info msg="Desired change: CREATE wp.aws101.org TXT [Id: /hostedzone/Z09150013CKR0A2R2DQQQ]"
+time="2022-11-14T12:22:18Z" level=info msg="3 record(s) in zone aws101.org. [Id: /hostedzone/Z09150013CKR0A2R2DQQQ] were successfully updated"
+time="2022-11-14T12:23:18Z" level=info msg="Applying provider record filter for domains: [aws101.org. .aws101.org.]"
+time="2022-11-14T12:23:18Z" level=info msg="All records are already up to date"
+time="2022-11-14T12:24:19Z" level=info msg="Applying provider record filter for domains: [aws101.org. .aws101.org.]"
+time="2022-11-14T12:24:19Z" level=info msg="All records are already up to date"
+```
+
+5. probamos nuestra aplicacion ingresando a
+
+(wp.aws101.org)[wp.aws101.org]
+
+![wordpress install](img/install.png)
 
 
 ## Disclaimer
