@@ -9,8 +9,6 @@
 - [KubeCtl](https://kubernetes.io/docs/tasks/tools/)
 - [Docker]()
 
-
-
 ## Preparacion
 
 - Creamos el Cluster de EKS
@@ -35,7 +33,7 @@
 
 - Verificamos cluster
 
-    Verificamos que el cluster se encuentre arriba y que sus nodos esten ready
+    Verificamos que el cluster se encuentre arriba y que sus nodos están en estado **ready**
 
     ```shell
     kubectl cluster-info
@@ -79,7 +77,7 @@
         }
     }
     ```
-- Creamos el I.R.S.A. (IAM Role for Service Account)
+- Creamos los I.R.S.A. (IAM Role for Service Account) para External DNS y EBS CSI
     - External Dns
 
         ```shell
@@ -148,10 +146,9 @@
 
 ## Desplegamos nuestra aplicacion
 
-En este workshop vamos a utilizar como ejemplo una aplicacion statefull compuesta por un servicio de bases de datos basado en MariaDB, un servicio web basado en Apache corriendo un Wordpress y External DNS para gestionar automaticamente los registros DNS.
-El objetivo es meramente educativo y pretende demostrar como desplegar containers statefull con almacenamiento basado en EBS.
+En este workshop vamos a utilizar como ejemplo una aplicación stateful compuesta por un servicio de bases de datos basado en MariaDB, un servicio web basado en Apache corriendo un Wordpress y External DNS para la gestionar automáticamente los registros DNS. El objetivo es meramente educativo y pretende demostrar cómo desplegar containers stateful con almacenamiento basado en EBS.
 
-1. deplegamos los manifiestos de Kubernetes utilizando Kubectl
+1. desplegamos los manifiestos de Kubernetes utilizando Kubectl
 
 ```shell
 kubectl apply -f manifests
@@ -198,7 +195,7 @@ mariadb-d66f64f79-lkmqz         1/1     Running   0          2m51s
 wordpress-76b458d445-7lk27      1/1     Running   0          2m51s
 ```
 
-4. Verificamos que External-DNS haya creado los registros DNS para nuestra aplicacion
+4. Verificamos que External-DNS haya creado los registros DNS para nuestra aplicación
 
 ```shell
 kubectl logs external-dns-65f6b4cc8b-6p846
@@ -213,16 +210,19 @@ time="2022-11-14T12:24:19Z" level=info msg="Applying provider record filter for 
 time="2022-11-14T12:24:19Z" level=info msg="All records are already up to date"
 ```
 
-5. probamos nuestra aplicacion ingresando a
+5. probamos nuestra aplicación ingresando via browser
 
 [wp.aws101.org](http://wp.aws101.org/)
 
 ![wordpress install](img/install.png)
 
+6. finalizamos la instalación de Wordpress
+
+
 ## Removemos los recursos
 
 ### Removemos los recursos en Kubernetes
-Es importante no saltearse este paso ya que algunos recursos en kubernetes generan recursos en AWS, si se saltean este paso pueden correr el riesgo de dejar algun recurso de AWS en el camino que les pueda genera costos a futuro.
+Es importante no saltarte este paso ya que algunos recursos en kubernetes generan recursos en AWS, si se saltean este paso pueden correr el riesgo de dejar algún recurso de AWS en el camino que les pueda genera costos a futuro.
 
 ```shell
 kubectl delete -f manifests
