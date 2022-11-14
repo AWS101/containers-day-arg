@@ -56,7 +56,7 @@
     ip-192-168-36-113.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
     ```
 
-- Crearemos una IAM Policy y un Role para permitirle a External-DNS interactuar con la api de AWS.
+- Crearemos una IAM Policy y un Role para permitirle al External-DNS interactuar con la API de AWS.
     **Actualizar la zona DNS**
 
     ```shell
@@ -148,7 +148,7 @@
 
 ## Desplegamos nuestra aplicacion
 
-El en este workshop vamos a utilizar como ejemplo una aplicacion statefull compuesta por un servicio de bases de datos basado en MariaDB, un servicio web basado en Apache corriendo un Wordpress y External DNS para la gestion automaticamente los registros DNS.
+En este workshop vamos a utilizar como ejemplo una aplicacion statefull compuesta por un servicio de bases de datos basado en MariaDB, un servicio web basado en Apache corriendo un Wordpress y External DNS para gestionar automaticamente los registros DNS.
 El objetivo es meramente educativo y pretende demostrar como desplegar containers statefull con almacenamiento basado en EBS.
 
 1. deplegamos los manifiestos de Kubernetes utilizando Kubectl
@@ -172,7 +172,7 @@ clusterrolebinding.rbac.authorization.k8s.io/external-dns created
 deployment.apps/external-dns created
 ```
 
-2. Verificamos que los deployments se encuentren available
+2. Verificamos que los deployments se encuentren en Available
 
 ```shell
 kubectl get deployments
@@ -215,14 +215,14 @@ time="2022-11-14T12:24:19Z" level=info msg="All records are already up to date"
 
 5. probamos nuestra aplicacion ingresando a
 
-(wp.aws101.org)[wp.aws101.org]
+[wp.aws101.org](http://wp.aws101.org/)
 
 ![wordpress install](img/install.png)
 
-## removemos los recursos
+## Removemos los recursos
 
 ### Removemos los recursos en Kubernetes
-Es importante no saltearse este paso ya que algunos recursos en kubernetes generan recursos en AWS, si se saltean este paso pueden correr el riezgo de dejar algun recurso de AWS en el camino que les pueda genera costos a futuro.
+Es importante no saltearse este paso ya que algunos recursos en kubernetes generan recursos en AWS, si se saltean este paso pueden correr el riesgo de dejar algun recurso de AWS en el camino que les pueda genera costos a futuro.
 
 ```shell
 kubectl delete -f manifests
@@ -243,13 +243,13 @@ clusterrolebinding.rbac.authorization.k8s.io "external-dns" deleted
 deployment.apps "external-dns" deleted
 ```
 
-### removemos el cluster
+### Removemos el cluster
 
 ```shell
   eksctl delete cluster -f awsug-containers-day-2022.yaml
 ```
 
-### removemos la policy generada
+### Removemos la policy generada
 
 ```shell
 aws iam delete-policy --policy-arn arn:aws:iam::695454143523:policy/aws101_externaldns_permissions
