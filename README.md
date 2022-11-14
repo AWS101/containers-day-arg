@@ -1,5 +1,7 @@
 # AWS UG Containers Day Argentina 2022
 
+[![CI](https://github.com/AWS101/containers-day-arg/actions/workflows/main.yml/badge.svg)](https://github.com/AWS101/containers-day-arg/actions/workflows/main.yml)
+
 ## Dependencias
 
 - [AWS CLI v2](https://docs.aws.amazon.com/es_es/cli/latest/userguide/getting-started-install.html)
