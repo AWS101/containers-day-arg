@@ -33,28 +33,35 @@
 
 - Verificamos cluster
 
-        Verificamos que el cluster se encuentre arriba y que sus nodos esten ready
+Verificamos que el cluster se encuentre arriba y que sus nodos esten ready
 
-        `kubectl cluster-info`
+```shell
+kubectl cluster-info
+`
 
-        ```shell
-        Kubernetes control plane is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com
-        CoreDNS is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-        ```
+```shell
+Kubernetes control plane is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com
+CoreDNS is running at https://E166A561EE12E832E7BBB48D45A85137.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+```
 
-        `kubectl get nodes`
+```shell
+kubectl get nodes
+```
 
-        ```shell
-        NAME                             STATUS   ROLES    AGE   VERSION
-        ip-192-168-20-168.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
-        ip-192-168-36-113.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
-        ```
+```shell
+NAME                             STATUS   ROLES    AGE   VERSION
+ip-192-168-20-168.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
+ip-192-168-36-113.ec2.internal   Ready    <none>   50m   v1.23.9-eks-ba74326
+```
 
 - Crearemos una IAM Policy y un Role para permitirle a External-DNS interactuar con la api de AWS.
     **Actualizar la zona DNS**
 
     ```shell
     aws iam create-policy --policy-name externaldns_permissions --policy-document file://iam/iam_policy.json
+    ```
+
+    ```json
     {
         "Policy": {
             "PolicyName": "externaldns_permissions",
@@ -73,22 +80,22 @@
 - Creamos el I.R.S.A. (IAM Role for Service Account)
     - External Dns
 
-    ```shell
-    eksctl create iamserviceaccount \
-        --name external-dns \
-        --cluster aws101 \
-        --attach-policy-arn arn:aws:iam::695454143523:policy/externaldns_permissions \
-        --approve \
-        --override-existing-serviceaccounts
-    ```
+        ```shell
+        eksctl create iamserviceaccount \
+            --name external-dns \
+            --cluster aws101 \
+            --attach-policy-arn arn:aws:iam::695454143523:policy/externaldns_permissions \
+            --approve \
+            --override-existing-serviceaccounts
+        ```
     - extraemos el role ARN para External DNS
 
-    ```shell
-    eksctl get iamserviceaccount \
-    --cluster aws101 \
-    -o json | jq \
-      -r '.[] | select(.metadata.name=="external-dns").status.roleARN'
-    ```
+        ```shell
+        eksctl get iamserviceaccount \
+        --cluster aws101 \
+        -o json | jq \
+        -r '.[] | select(.metadata.name=="external-dns").status.roleARN'
+        ```
 
     - (Habilitamos EBS CSI controller)[https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html]
 
@@ -112,6 +119,9 @@
 
     ```shell
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/aws/deploy.yaml
+    ```
+
+    ```shell
         namespace/ingress-nginx created
         serviceaccount/ingress-nginx created
         configmap/ingress-nginx-controller created
