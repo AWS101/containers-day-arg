@@ -266,6 +266,9 @@ Les pedimos que sean conscientes de remover todos los recursos utilizados cuando
 Damian A. Gitto Olguin
 
 [AWS Community Hero](https://www.youtube.com/c/damianolguinAWSHERO)
+[AWS101](https://www.youtube.com/@AWS101)
 
-[@enlink](https://twitter.com/enlink)] / [@teracloudio](https://twitter.com/teracloudio)
+[@enlink](https://twitter.com/enlink) /
+[@teracloudio](https://twitter.com/teracloudio)
+
 <https://teracloud.io>
